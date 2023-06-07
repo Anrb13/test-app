@@ -1,4 +1,4 @@
-.qa-home {
+.main-page {
   display: flex;
   flex-direction: column;
 
@@ -17,5 +17,29 @@
 
     &-button {
     }
+  }
+
+  &__table {
+    position: relative;
+    
+    &--loading {
+      opacity: 0.6;
+    }
+
+    &-head {
+      font-weight: 700;
+    }
+
+    &-body {
+      font-weight: 400;
+    }
+  }
+
+  &__loader {
+    opacity: 1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%)
   }
 }

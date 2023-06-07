@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <Home msg="Welcome to Your Vue.js App"/>
+    <MainPage />
   </div>
 </template>
 
 <script>
-import Home from './components/Home.vue';
+import MainPage from './components/MainPage.vue';
 
 export default {
   name: 'App',
   components: {
-    Home,
+    MainPage,
   },
 };
 </script>
@@ -22,8 +22,8 @@ export default {
   width: 100%;
   margin: 24px 14px;
 
-  @media (min-width: 768px) {
-    width: 768px;
+  @media (min-width: 600px) {
+    width: 600px;
     margin: auto;
   }
 }
