@@ -1,13 +1,20 @@
 <template>
   <div class="main-page">
     <header class="main-page__header">
-      <h1 class="main-page__header-title">Список пользователей</h1>
-      <button class="btn main-page__header-button light-green">Добавить</button>
+      <h1 class="main-page__header-title">
+        Список пользователей
+      </h1>
+      <button
+        class="btn main-page__header-button waves-effect waves-light"
+        :class="{'disabled': loading}"
+        @click="showDialog"
+      >
+        Добавить
+      </button>
     </header>
 
     <table
       class="main-page__table striped"
-      :class="{'main-page__table--loading': loading}"
     >
       <thead class="main-page__table-head">
         <tr>
@@ -17,7 +24,10 @@
           <th>Дата рождения</th>
         </tr>
       </thead>
-      <tbody class="main-page__table-body">
+      <tbody
+        class="main-page__table-body"
+        :class="{'main-page__table-body--loading': loading}"
+      >
         <tr v-for="user in users" :key="user.id">
           <th>{{ user.id }}</th>
           <th>{{ user.lastName }}</th>
@@ -26,53 +36,27 @@
         </tr>
       </tbody>
 
-      <div v-if="loading" class="main-page__loader">
-        <div class="preloader-wrapper big active">
-          <div class="spinner-layer spinner-blue-only">
-            <div class="circle-clipper left">
-              <div class="circle"></div>
-            </div><div class="gap-patch">
-              <div class="circle"></div>
-            </div><div class="circle-clipper right">
-              <div class="circle"></div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <TaLoader v-if="loading" class="main-page__loader" />
     </table>
+    <TaDialog
+      v-if="dialogShown"
+      class="main-page__dialog"
+      @close="closeDialog"
+    />
   </div>
 </template>
 
 <script>
-const initialUsers = [
-  {
-    id: '1',
-    lastName: 'Яблонев',
-    firstName: 'Андрей',
-    birthday: '01.01.1960',
-  },
-  {
-    id: '2',
-    lastName: 'Юдин',
-    firstName: 'Владимир',
-    birthday: '01.01.2000',
-  },
-  {
-    id: '3',
-    lastName: 'Экономов',
-    firstName: 'Борис',
-    birthday: '01.01.1980',
-  },
-  {
-    id: '4',
-    lastName: 'Головкин',
-    firstName: 'Геннадий',
-    birthday: '01.01.1940',
-  },
-];
+import TaLoader from '@/components/TaLoader';
+import TaDialog from '@/components/TaDialog';
+import { initialUsers } from './constants';
 
 export default {
   name: 'MainPage',
+  components: {
+    TaLoader,
+    TaDialog,
+  },
 
   data() {
     return {
@@ -80,6 +64,7 @@ export default {
       // Число показанных строк
       count: 5,
       loading: true,
+      dialogShown: false,
     };
   },
 
@@ -105,6 +90,12 @@ export default {
         this.loading = false;
       }, 2000);
     },
+    showDialog() {
+      this.dialogShown = true;
+    },
+    closeDialog() {
+      this.dialogShown = false;
+    },
   },
 
   mounted() {
@@ -113,7 +104,6 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
 @import './styles.scss';
 </style>

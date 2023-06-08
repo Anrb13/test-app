@@ -1,6 +1,7 @@
 .main-page {
   display: flex;
   flex-direction: column;
+  position: relative;
 
   &__header {
     width: 100%;
@@ -21,10 +22,6 @@
 
   &__table {
     position: relative;
-    
-    &--loading {
-      opacity: 0.6;
-    }
 
     &-head {
       font-weight: 700;
@@ -32,14 +29,28 @@
 
     &-body {
       font-weight: 400;
+    
+      &--loading {
+        opacity: 0.6;
+      }
     }
   }
 
   &__loader {
-    opacity: 1;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%)
+  }
+
+  &__dialog {
+    position: absolute;
+    top: 10%;
+    left: 10%;
+
+    @media (min-width: 600px) {
+      top: 100px;
+      left: 100px;
+    }
   }
 }
