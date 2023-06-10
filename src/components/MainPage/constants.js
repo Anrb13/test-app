@@ -3,25 +3,25 @@ export const initialUsers = [
     id: '1',
     lastName: 'Яблонев',
     firstName: 'Андрей',
-    birthday: '01.01.1960',
+    birthday: '1960-01-01',
   },
   {
     id: '2',
     lastName: 'Юдин',
     firstName: 'Владимир',
-    birthday: '01.01.2000',
+    birthday: '1970-01-01',
   },
   {
     id: '3',
     lastName: 'Экономов',
     firstName: 'Борис',
-    birthday: '01.01.1980',
+    birthday: '1980-01-01',
   },
   {
     id: '4',
     lastName: 'Головкин',
     firstName: 'Геннадий',
-    birthday: '01.01.1940',
+    birthday: '1990-01-01',
   },
 ];
 

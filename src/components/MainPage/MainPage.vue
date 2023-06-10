@@ -24,11 +24,12 @@
           <th>Дата рождения</th>
         </tr>
       </thead>
+
       <tbody
         class="main-page__table-body"
         :class="{'main-page__table-body--loading': loading}"
       >
-        <tr v-for="user in users" :key="user.id">
+        <tr v-for="user in slicedUsers" :key="user.id">
           <th>{{ user.id }}</th>
           <th>{{ user.lastName }}</th>
           <th>{{ user.firstName }}</th>
@@ -38,10 +39,23 @@
 
       <TaLoader v-if="loading" class="main-page__loader" />
     </table>
+
+    <div class="main-page__pagination">
+      <button
+        class="btn-small"
+        :class="{'disabled': users.length <= pagination.endAt || loading}"
+        type="button"
+        @click="paginationPlus"
+      >
+        Загрузить ещё
+      </button>
+    </div>
+
     <TaDialog
       v-if="dialogShown"
       class="main-page__dialog"
       @close="closeDialog"
+      @submit="addNewUser"
     />
   </div>
 </template>
@@ -61,8 +75,10 @@ export default {
   data() {
     return {
       users: [{}, {}, {}, {}, {}, {}],
-      // Число показанных строк
-      count: 5,
+      pagination: {
+        startAt: 0,
+        endAt: 5,
+      },
       loading: true,
       dialogShown: false,
     };
@@ -70,15 +86,16 @@ export default {
 
   computed: {
     slicedUsers() {
-      return this.users.slice(0, this.count);
+      const { startAt, endAt } = this.pagination;
+      return this.users.slice(startAt, endAt);
     },
   },
 
   methods: {
     /**
-     * При монтировании компонента проверяем локал сторейдж
-     * на наличие уже записанного массива users, если нет
-     * заполняем, с таймаутом для лоадера записывает в дату
+     * При монтировании компонента проверяет локал сторейдж
+     * на наличие уже записанного массива users, если нет -
+     * заполняет, с таймаутом для лоадера записывает в дату
      */
     init() {
       if (!localStorage.getItem('users')) {
@@ -95,6 +112,27 @@ export default {
     },
     closeDialog() {
       this.dialogShown = false;
+    },
+    addNewUser(value) {
+      this.loading = true;
+      this.closeDialog();
+
+      setTimeout(() => {
+        this.users.push({ id: this.users.length + 1, ...value });
+      }, 500);
+
+      setTimeout(() => {
+        localStorage.setItem('users', JSON.stringify(this.users));
+        this.loading = false;
+      }, 750);
+    },
+    paginationPlus() {
+      this.loading = true;
+
+      setTimeout(() => {
+        this.pagination.endAt += 5;
+        this.loading = false;
+      }, 500);
     },
   },
 

@@ -20,7 +20,7 @@
     }
   }
 
-  &__table {
+  & &__table {
     position: relative;
 
     &-head {
@@ -29,9 +29,15 @@
 
     &-body {
       font-weight: 400;
+      height: 260px;
+      overflow-y: auto;
     
       &--loading {
         opacity: 0.6;
+      }
+
+      tr {
+        height: 52px;
       }
     }
   }
@@ -52,5 +58,13 @@
       top: 100px;
       left: 100px;
     }
+  }
+
+  &__pagination {
+    width: 100%;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
