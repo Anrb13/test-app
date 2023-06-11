@@ -28,6 +28,8 @@
 
   & &__label {
     font-size: 12px;
+    padding-bottom: 14px;
+    position: relative;
 
     input {
       &.ta-dialog__input {
@@ -35,6 +37,15 @@
       }
     }
   }
+
+    &__error {
+      position: absolute;
+      bottom: 8px;
+      left: 0;
+      color: red;
+      font-size: 12px;
+      line-height: 12px;
+    }
 
   & &__submit {
     width: 100%;

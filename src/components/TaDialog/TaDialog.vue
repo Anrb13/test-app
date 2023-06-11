@@ -19,11 +19,13 @@
         type="text"
         class="ta-dialog__input"
         :class="{'invalid': error.lastName}"
-        minlength="2"
         maxlength="30"
         v-model="model.lastName"
         @input="error.lastName = false"
       >
+      <span v-if="error.lastName" class="ta-dialog__error">
+        Недопустимая фамилия
+      </span>
     </label>
     <label for="f-name" class="ta-dialog__label">
       Имя
@@ -32,11 +34,13 @@
         type="text"
         class="ta-dialog__input"
         :class="{'invalid': error.firstName}"
-        minlength="2"
         maxlength="30"
         v-model="model.firstName"
         @input="error.firstName = false"
       >
+      <span v-if="error.firstName" class="ta-dialog__error">
+        Недопустимое имя
+      </span>
     </label>
     <label for="date" class="ta-dialog__label">
       Дата рождения
@@ -48,6 +52,9 @@
         v-model="model.birthday"
         @input="error.birthday = false"
       >
+      <span v-if="error.birthday" class="ta-dialog__error">
+        Недопустимое значение даты
+      </span>
     </label>
 
     <button
@@ -85,11 +92,11 @@ export default {
   computed: {
     isLastNameValid() {
       const { lastName } = this.model;
-      return lastName.length > 1 && lastName.length < 30;
+      return lastName.length > 1 && lastName.length < 30 && (/^[А-Яа-я ,.'-]+$/i).test(lastName);
     },
     isFirstNameValid() {
       const { firstName } = this.model;
-      return firstName.length > 1 && firstName.length < 30;
+      return firstName.length > 1 && firstName.length < 30 && (/^[А-Яа-я ,.'-]+$/i).test(firstName);
     },
     isBirthdayValid() {
       const { birthday } = this.model;
