@@ -98,6 +98,73 @@
       </button>
     </div>
 
+    <ul v-if="paginationPagesCount > 1" class="main-page__pagination">
+      <li
+        class="main-page__arrow"
+        :class="{'main-page__arrow--disabled': currentPage === 1 || loading}"
+        tabindex="0"
+        @click="currentPage = 1"
+        @keypress.enter="currentPage = 1"
+      >
+        <i class="material-icons">
+          chevron_left
+        </i>
+        <i class="material-icons main-page__arrow--left">
+          chevron_left
+        </i>
+      </li>
+      <li
+        class="main-page__arrow main-page__arrow--big"
+        :class="{'main-page__arrow--disabled': currentPage === 1 || loading}"
+        tabindex="0"
+        @click="currentPage -= 1"
+        @keypress.enter="currentPage -= 1"
+      >
+        <i class="material-icons">
+          chevron_left
+        </i>
+      </li>
+
+      <li v-if="currentPage > 1">{{ currentPage - 1 }}</li>
+      <li class="main-page__pagination--active">
+        {{ currentPage }}
+      </li>
+      <li v-if="paginationPagesCount > currentPage">
+        {{ currentPage + 1 }}
+      </li>
+      <li
+        v-if="currentPage === 1 && paginationPagesCount > currentPage + 1"
+      >
+        {{ currentPage + 2 }}
+      </li>
+
+      <li
+        class="main-page__arrow  main-page__arrow--big"
+        :class="{'main-page__arrow--disabled': currentPage === paginationPagesCount || loading}"
+        tabindex="0"
+        @click="currentPage += 1"
+        @keypress.enter="currentPage += 1"
+      >
+        <i class="material-icons">
+          chevron_right
+        </i>
+      </li>
+      <li
+        class="main-page__arrow"
+        :class="{'main-page__arrow--disabled': currentPage === paginationPagesCount || loading}"
+        tabindex="0"
+        @click="currentPage = paginationPagesCount"
+        @keypress.enter="currentPage = paginationPagesCount"
+      >
+        <i class="material-icons">
+          chevron_right
+        </i>
+        <i class="material-icons main-page__arrow--right">
+          chevron_right
+        </i>
+      </li>
+    </ul>
+
     <TaDialog
       v-if="dialogShown"
       class="main-page__dialog"
@@ -132,6 +199,8 @@ export default {
       // Сортировка
       sortType: 'id',
       sortReverse: false,
+      currentPage: 1,
+      paginationItemsCount: 5,
     };
   },
 
@@ -139,17 +208,34 @@ export default {
     users: {
       handler() {
         this.fillModel();
+        this.sortModel();
       },
       immediate: true,
     },
-    endAt() {
+    endAt(v) {
+      this.startFakeLoading();
       this.fillModel();
+      this.sortModel();
+      this.paginationItemsCount = v - this.startAt;
     },
     sortType() {
+      this.startFakeLoading();
       this.sortModel();
     },
     sortReverse() {
+      this.startFakeLoading();
       this.sortModel();
+    },
+    currentPage(v) {
+      this.startFakeLoading();
+
+      if (v === 1) {
+        this.startAt = 0;
+        this.endAt = this.paginationItemsCount;
+      } else {
+        this.startAt = this.paginationItemsCount * (v - 1);
+        this.endAt = this.paginationItemsCount * v;
+      }
     },
   },
 
@@ -165,6 +251,9 @@ export default {
     isSortByFirstName() {
       const { sortType } = this;
       return sortType === 'fn';
+    },
+    paginationPagesCount() {
+      return Math.ceil(this.users.length / this.paginationItemsCount);
     },
   },
 
@@ -194,14 +283,12 @@ export default {
       this.loading = true;
       this.closeDialog();
 
-      setTimeout(() => {
-        this.users.push({ id: this.users.length + 1, ...value });
-      }, 500);
+      this.users.push({ id: this.users.length + 1, ...value });
 
       setTimeout(() => {
         localStorage.setItem('users', JSON.stringify(this.users));
         this.loading = false;
-      }, 750);
+      }, 2000);
     },
     paginationPlus() {
       this.loading = true;
@@ -209,7 +296,7 @@ export default {
       setTimeout(() => {
         this.endAt += 5;
         this.loading = false;
-      }, 500);
+      }, 1000);
     },
     sortByType(type) {
       if (this.sortType === type) {
@@ -255,10 +342,23 @@ export default {
       }
     },
     getSortValueByChar(a, b) {
-      if (a.charAt(0) < b.charAt(0)) {
+      if (
+        a.charAt(0).toUpperCase() === b.charAt(0).toUpperCase()
+        && a.charAt(1).toUpperCase() < b.charAt(1).toUpperCase()
+      ) {
+        return -1;
+      }
+      if (a.charAt(0).toUpperCase() < b.charAt(0).toUpperCase()) {
         return -1;
       }
       return 1;
+    },
+    startFakeLoading() {
+      this.loading = true;
+
+      setTimeout(() => {
+        this.loading = false;
+      }, 1000);
     },
   },
 

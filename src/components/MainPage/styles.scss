@@ -125,5 +125,50 @@ $thumb-color: #26a69a;
     display: flex;
     align-items: center;
     justify-content: center;
+
+    > li {
+      width: 30px;
+      height: 30px;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &--active {
+      pointer-events: none;
+      color: white;
+      background-color: #26a69a;
+      border-radius: 2px;
+    }
+  }
+
+  & &__arrow { 
+    cursor: pointer;
+    position: relative;
+
+    &--disabled {
+      pointer-events: none;
+      color: gainsboro;
+    }
+
+    &--big {
+      > i {
+        font-size: 30px;
+      }
+    }
+
+    &--left,
+    &--right {
+      position: absolute;
+    }
+
+    &--left {
+      left: 8px;
+    }
+
+    &--right {
+      right: 8px;
+    }
   }
 }
