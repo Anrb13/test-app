@@ -125,7 +125,9 @@
         </i>
       </li>
 
-      <li v-if="currentPage === paginationPagesCount">{{ currentPage - 2 }}</li>
+      <li v-if="paginationPagesCount > 2 && currentPage === paginationPagesCount">
+        {{ currentPage - 2 }}
+      </li>
       <li v-if="currentPage > 1">{{ currentPage - 1 }}</li>
       <li class="main-page__pagination--active">
         {{ currentPage }}
