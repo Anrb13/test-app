@@ -9,6 +9,7 @@
         :class="{'disabled': loading}"
         @click="showDialog"
         tabindex="0"
+        data-test="open-add-new-user-form-btn"
       >
         Добавить
       </button>
@@ -92,6 +93,7 @@
         :class="{'disabled': users.length <= endAt || loading}"
         type="button"
         tabindex="0"
+        data-test="load-more-btn"
         @click="paginationPlus"
       >
         Загрузить ещё
@@ -100,23 +102,21 @@
 
     <ul v-if="paginationPagesCount > 1" class="main-page__pagination">
       <li
-        class="main-page__arrow"
+        class="main-page__arrow main-page__arrow--rotate"
         :class="{'main-page__arrow--disabled': currentPage === 1 || loading}"
         tabindex="0"
         @click="currentPage = 1"
         @keypress.enter="currentPage = 1"
       >
         <i class="material-icons">
-          chevron_left
-        </i>
-        <i class="material-icons main-page__arrow--left">
-          chevron_left
+          last_page
         </i>
       </li>
       <li
-        class="main-page__arrow main-page__arrow--big"
+        class="main-page__arrow"
         :class="{'main-page__arrow--disabled': currentPage === 1 || loading}"
         tabindex="0"
+        data-test="load-list-left"
         @click="currentPage -= 1"
         @keypress.enter="currentPage -= 1"
       >
@@ -125,6 +125,7 @@
         </i>
       </li>
 
+      <li v-if="currentPage === paginationPagesCount">{{ currentPage - 2 }}</li>
       <li v-if="currentPage > 1">{{ currentPage - 1 }}</li>
       <li class="main-page__pagination--active">
         {{ currentPage }}
@@ -139,9 +140,10 @@
       </li>
 
       <li
-        class="main-page__arrow  main-page__arrow--big"
+        class="main-page__arrow"
         :class="{'main-page__arrow--disabled': currentPage === paginationPagesCount || loading}"
         tabindex="0"
+        data-test="load-list-right"
         @click="currentPage += 1"
         @keypress.enter="currentPage += 1"
       >
@@ -157,10 +159,7 @@
         @keypress.enter="currentPage = paginationPagesCount"
       >
         <i class="material-icons">
-          chevron_right
-        </i>
-        <i class="material-icons main-page__arrow--right">
-          chevron_right
+          last_page
         </i>
       </li>
     </ul>
@@ -219,11 +218,11 @@ export default {
       this.paginationItemsCount = v - this.startAt;
     },
     sortType() {
-      this.startFakeLoading();
+      this.startFakeLoading(500);
       this.sortModel();
     },
     sortReverse() {
-      this.startFakeLoading();
+      this.startFakeLoading(500);
       this.sortModel();
     },
     currentPage(v) {
@@ -353,12 +352,12 @@ export default {
       }
       return 1;
     },
-    startFakeLoading() {
+    startFakeLoading(timeout = 1000) {
       this.loading = true;
 
       setTimeout(() => {
         this.loading = false;
-      }, 1000);
+      }, timeout);
     },
   },
 

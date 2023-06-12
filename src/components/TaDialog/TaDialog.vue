@@ -1,6 +1,6 @@
 <!-- eslint-disable vuejs-accessibility/label-has-for -->
 <template>
-  <form class="ta-dialog z-depth-3">
+  <form class="ta-dialog z-depth-3" data-test="add-new-user-form">
     <h2 class="ta-dialog__title">
       Добавление нового пользователя
       <button
@@ -61,6 +61,7 @@
       class="ta-dialog__submit btn waves-effect waves-light"
       type="button"
       name="action"
+      data-test="add-new-user-form-btn-submit"
       @click="submit"
     >
       Добавить

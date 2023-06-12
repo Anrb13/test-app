@@ -152,23 +152,10 @@ $thumb-color: #26a69a;
       color: gainsboro;
     }
 
-    &--big {
+    &--rotate {
       > i {
-        font-size: 30px;
+        transform: rotate(180deg);
       }
-    }
-
-    &--left,
-    &--right {
-      position: absolute;
-    }
-
-    &--left {
-      left: 8px;
-    }
-
-    &--right {
-      right: 8px;
     }
   }
 }
