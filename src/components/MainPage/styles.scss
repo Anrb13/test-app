@@ -1,45 +1,104 @@
+$size: 4px;
+$back-color: lightgray;
+$thumb-color: #26a69a;
+
 .main-page {
   display: flex;
   flex-direction: column;
   position: relative;
 
-  &__header {
+  &__title {
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 0;
 
-    &-title {
+    &-text {
       font-size: 24px;
       font-weight: 700;
       line-height: 36px;
     }
+  }
 
-    &-button {
+  &__header {
+    line-height: 24px;
+    width: 100%;
+    display: flex;
+    height: 51px;
+    font-weight: 700;
+    border-bottom: 1px dashed gray;
+
+    &-item {
+      cursor: pointer;
     }
   }
 
   & &__table {
+    font-size: 14px;
     position: relative;
-
-    &-head {
-      font-weight: 700;
-    }
+    border-bottom: 1px dashed gray;
 
     &-body {
-      font-weight: 400;
+      line-height: 20px;
       height: 260px;
       overflow-y: auto;
+    
+      scrollbar-color: $back-color;
+      scrollbar-width: thin;
+    
+      &::-webkit-scrollbar {
+        display: block;
+        width: $size;
+        height: $size;
+      }
+      &::-webkit-scrollbar-track {
+        background-color: $back-color;
+      }
+    
+      &::-webkit-scrollbar-thumb {
+        background-color: $thumb-color;
+      }
     
       &--loading {
         opacity: 0.6;
       }
 
-      tr {
+      &-item {
+        display: flex;
         height: 52px;
+
+        &:nth-of-type(even) {
+          background-color: rgb(234, 246, 245);
+          border-radius: 4px;
+        }
       }
     }
+
+    &-id {
+      width: 10%;
+    }
+    &-lastname,
+    &-firstname {
+      width: 30%;
+    }
+    &-birthday {
+      width: 25%;
+    }
+
+    &-id,
+    &-lastname,
+    &-firstname,
+    &-birthday {
+      display: flex;
+      align-items: center;
+      padding-left: 10px;
+      position: relative;
+    }
+  }
+
+  &__sort {
+    margin-left: 4px;
   }
 
   &__loader {

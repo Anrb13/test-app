@@ -1,0 +1,25 @@
+.ta-sort-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 24px;
+
+  &--active {
+    color: #26a69a;
+  }
+
+  .material-icons {
+    font-size: 20px;
+
+    &.dropdown {
+      font-size: 18px;
+      position: absolute;
+      right: -3px;
+      bottom: -3px;
+
+      &.reverse {
+        transform: rotate(180deg);
+      }
+    }
+  }
+}
